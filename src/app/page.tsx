@@ -63,6 +63,14 @@ const router = useRouter()
       setMessage('Both title and content are required.')
       return
     }
+// handling max notes limits
+    const MAX_NOTES = 50
+
+
+    if (notes.length >= MAX_NOTES) {
+    setMessage(`You’ve reached the maximum limit of ${MAX_NOTES} notes.`)
+    return
+  }
 
     const { error } = await supabase.from('Notes').insert({
       title,
