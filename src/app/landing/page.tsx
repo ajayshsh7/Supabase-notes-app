@@ -21,7 +21,7 @@ const demoNotes = [
   {
     id: 4,
     title: "🎯 About Me",
-    content: "Hi, I’m [Your Name]! I built this app to simplify note-taking. Feel free to explore!",
+    content: "Hi, I’m Ajay I built this app to simplify note-taking. Feel free to explore!",
   }
 ]
 
