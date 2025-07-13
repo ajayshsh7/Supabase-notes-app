@@ -4,6 +4,11 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabaseClient'
 import { withAuth } from '../../lib/withAuth'
 import styles from './page.module.css'
+import { useRouter } from 'next/navigation'
+
+
+
+
 
 function Home() {
   const [title, setTitle] = useState('')
@@ -27,6 +32,17 @@ function Home() {
 
     fetchUserAndNotes()
   }, [])
+const router = useRouter()
+  const handleLogout = async () => {
+    
+  const { error } = await supabase.auth.signOut()
+  if (!error) {
+    setUserId(null)
+    setNotes([])
+    router.push('/home') 
+  }
+}
+
 
   const fetchNotes = async (uid: string) => {
     const { data, error } = await supabase
@@ -61,52 +77,65 @@ function Home() {
 
       setTitle('')
       setContent('')
-      fetchNotes(userId!) 
+      fetchNotes(userId!)
     }
   }
 
   const handleDeleteNote = async (noteId: number) => {
-  const { error } = await supabase.from('Notes').delete().eq('id', noteId)
+    const { error } = await supabase.from('Notes').delete().eq('id', noteId)
 
-  if (error) {
-    console.error('Delete Error:', error)
-    setMessage('Failed to delete note.')
-  } else {
-    fetchNotes(userId!)
+    if (error) {
+      console.error('Delete Error:', error)
+      setMessage('Failed to delete note.')
+    } else {
+      fetchNotes(userId!)
+    }
   }
-}
-const handleEditNote = (note: any) => {
-  setEditingNoteId(note.id)
-  setEditTitle(note.title)
-  setEditContent(note.content)
-}
-const handleUpdateNote = async () => {
-  if (!editTitle.trim() || !editContent.trim()) {
-    setMessage('Both fields are required.')
-    return
+  const handleEditNote = (note: any) => {
+    setEditingNoteId(note.id)
+    setEditTitle(note.title)
+    setEditContent(note.content)
   }
+  const handleUpdateNote = async () => {
+    if (!editTitle.trim() || !editContent.trim()) {
+      setMessage('Both fields are required.')
+      return
+    }
 
-  const { error } = await supabase
-    .from('Notes')
-    .update({
-      title: editTitle,
-      content: editContent,
-    })
-    .eq('id', editingNoteId)
+    const { error } = await supabase
+      .from('Notes')
+      .update({
+        title: editTitle,
+        content: editContent,
+      })
+      .eq('id', editingNoteId)
 
-  if (error) {
-    console.error('Update error:', error)
-    setMessage('Error updating note.')
-  } else {
-    setEditingNoteId(null)
-    setEditTitle('')
-    setEditContent('')
-    fetchNotes(userId!)
+    if (error) {
+      console.error('Update error:', error)
+      setMessage('Error updating note.')
+    } else {
+      setEditingNoteId(null)
+      setEditTitle('')
+      setEditContent('')
+      fetchNotes(userId!)
+    }
   }
-}
 
   return (
     <div className={styles.container}>
+    <div className={styles.topBar}>
+  <h2 className={styles.logo}>Notes App</h2>
+  {userId ? (
+    <button className={styles.profileButton} onClick={handleLogout}>
+      Logout
+    </button>
+  ) : (
+    <a href="/login" className={styles.profileButton}>
+      Login
+    </a>
+  )}
+</div>
+
       <h1>Create a New Note</h1>
 
       <input
@@ -139,59 +168,59 @@ const handleUpdateNote = async () => {
       ) : (
         <ul className={styles.noteList}>
           {notes.map((note) => (
-  <li key={note.id} className={styles.noteItem}>
-    <div className={styles.noteHeader}>
-      
-      {editingNoteId === note.id ? (
-  <>
-    <input
-      type="text"
-      value={editTitle}
-      onChange={(e) => setEditTitle(e.target.value)}
-      className={styles.input}
-    />
-    <textarea
-      value={editContent}
-      onChange={(e) => setEditContent(e.target.value)}
-      rows={4}
-      className={styles.textarea}
-    />
-    <button onClick={handleUpdateNote} className={styles.button}>
-      Save
-    </button>
-    <button onClick={() => setEditingNoteId(null)} className={styles.button}>
-      Cancel
-    </button>
-  </>
-) : (
-  <>
-    <div className={styles.noteHeader}>
-      <h3>{note.title}</h3>
-      <div className={styles.actions}>
-        <span
-          className={styles.icon}
-          onClick={() => handleEditNote(note)}
-          title="Edit"
-        >
-          ✏️
-        </span>
-        <span
-          className={styles.icon}
-          onClick={() => handleDeleteNote(note.id)}
-          title="Delete"
-        >
-          🗑️
-        </span>
-      </div>
-    </div>
-    <p>{note.content}</p>
-  </>
-)}
+            <li key={note.id} className={styles.noteItem}>
+              <div className={styles.noteHeader}>
 
-    </div>
-    
-  </li>
-))}
+                {editingNoteId === note.id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className={styles.input}
+                    />
+                    <textarea
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      rows={4}
+                      className={styles.textarea}
+                    />
+                    <button onClick={handleUpdateNote} className={styles.button}>
+                      Save
+                    </button>
+                    <button onClick={() => setEditingNoteId(null)} className={styles.button}>
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.noteHeader}>
+                      <h3>{note.title}</h3>
+                      <div className={styles.actions}>
+                        <span
+                          className={styles.icon}
+                          onClick={() => handleEditNote(note)}
+                          title="Edit"
+                        >
+                          ✏️
+                        </span>
+                        <span
+                          className={styles.icon}
+                          onClick={() => handleDeleteNote(note.id)}
+                          title="Delete"
+                        >
+                          🗑️
+                        </span>
+                      </div>
+                    </div>
+                    <p>{note.content}</p>
+                  </>
+                )}
+
+              </div>
+
+            </li>
+          ))}
 
         </ul>
       )}
