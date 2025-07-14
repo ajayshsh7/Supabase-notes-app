@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 
 
 
-function Home() {
+function Dashboard() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [notes, setNotes] = useState<any[]>([])
@@ -39,7 +39,7 @@ const router = useRouter()
   if (!error) {
     setUserId(null)
     setNotes([])
-    router.push('/home') 
+    router.push('/') 
   }
 }
 
@@ -236,4 +236,4 @@ const router = useRouter()
   )
 }
 
-export default withAuth(Home)
+export default withAuth(Dashboard)

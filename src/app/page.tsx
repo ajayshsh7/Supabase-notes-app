@@ -25,7 +25,7 @@ const demoNotes = [
   }
 ]
 
-export default function LandingPage() {
+export default function home() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
