@@ -31,8 +31,7 @@ export default function LandingPage() {
       <header className={styles.header}>
         <h1 className={styles.logo}>My Notes App</h1>
         <div className={styles.actions}>
-          <Link href="/login" className={styles.link}>Login</Link>
-          <Link href="/signup" className={styles.link}>Sign Up</Link>
+          <Link href="/auth" className={styles.link}>Login</Link>
         </div>
       </header>
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../../lib/supabaseClient'
 import { withAuth } from '../../../lib/withAuth'
-import styles from './page.module.css'
+import styles from './dashboard.module.css'
 import { useRouter } from 'next/navigation'
 
 
