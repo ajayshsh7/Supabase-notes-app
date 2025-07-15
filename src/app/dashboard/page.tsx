@@ -49,6 +49,7 @@ const router = useRouter()
       .from('Notes')
       .select('*')
       .eq('user_id', uid)
+      .order('pinned_notes', { ascending: false })
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -88,6 +89,21 @@ const router = useRouter()
       fetchNotes(userId!)
     }
   }
+
+
+const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
+  const { error } = await supabase
+    .from('Notes')
+    .update({ pinned_notes: !currentStatus })
+    .eq('id', noteId)
+
+  if (error) {
+    console.error('Error pinning/unpinning:', error)
+    setMessage('Failed to pin/unpin the note.')
+  } else {
+    fetchNotes(userId!)
+  }
+}
 
   const handleDeleteNote = async (noteId: number) => {
     const { error } = await supabase.from('Notes').delete().eq('id', noteId)
@@ -170,15 +186,18 @@ const router = useRouter()
 
       <hr />
 
-      <h2>Your Notes</h2>
       {notes.length === 0 ? (
-        <p>No notes yet.</p>
-      ) : (
+  <p>No notes yet.</p>
+) : (
+  <>
+    {/* 📌 Pinned Notes Section */}
+    {notes.some(note => note.pinned_notes) && (
+      <>
+        <h2>Pinned Notes</h2>
         <ul className={styles.noteList}>
-          {notes.map((note) => (
+          {notes.filter(note => note.pinned_notes).map((note) => (
             <li key={note.id} className={styles.noteItem}>
               <div className={styles.noteHeader}>
-
                 {editingNoteId === note.id ? (
                   <>
                     <input
@@ -193,18 +212,21 @@ const router = useRouter()
                       rows={4}
                       className={styles.textarea}
                     />
-                    <button onClick={handleUpdateNote} className={styles.button}>
-                      Save
-                    </button>
-                    <button onClick={() => setEditingNoteId(null)} className={styles.button}>
-                      Cancel
-                    </button>
+                    <button onClick={handleUpdateNote} className={styles.button}>Save</button>
+                    <button onClick={() => setEditingNoteId(null)} className={styles.button}>Cancel</button>
                   </>
                 ) : (
                   <>
                     <div className={styles.noteHeader}>
                       <h3>{note.title}</h3>
                       <div className={styles.actions}>
+                        <span
+                          className={styles.icon}
+                          onClick={() => handleTogglePin(note.id, note.pinned_notes)}
+                          title="Unpin"
+                        >
+                          📌
+                        </span>
                         <span
                           className={styles.icon}
                           onClick={() => handleEditNote(note)}
@@ -224,14 +246,77 @@ const router = useRouter()
                     <p>{note.content}</p>
                   </>
                 )}
-
               </div>
-
             </li>
           ))}
-
         </ul>
-      )}
+      </>
+    )}
+
+    {/* 📝 Other Notes Section */}
+    {notes.some(note => !note.pinned_notes) && (
+      <>
+        <h2>Your Notes</h2>
+        <ul className={styles.noteList}>
+          {notes.filter(note => !note.pinned_notes).map((note) => (
+            <li key={note.id} className={styles.noteItem}>
+              <div className={styles.noteHeader}>
+                {editingNoteId === note.id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className={styles.input}
+                    />
+                    <textarea
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      rows={4}
+                      className={styles.textarea}
+                    />
+                    <button onClick={handleUpdateNote} className={styles.button}>Save</button>
+                    <button onClick={() => setEditingNoteId(null)} className={styles.button}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.noteHeader}>
+                      <h3>{note.title}</h3>
+                      <div className={styles.actions}>
+                        <span
+                          className={styles.icon}
+                          onClick={() => handleTogglePin(note.id, note.pinned_notes)}
+                          title="Pin"
+                        >
+                          📌
+                        </span>
+                        <span
+                          className={styles.icon}
+                          onClick={() => handleEditNote(note)}
+                          title="Edit"
+                        >
+                          ✏️
+                        </span>
+                        <span
+                          className={styles.icon}
+                          onClick={() => handleDeleteNote(note.id)}
+                          title="Delete"
+                        >
+                          🗑️
+                        </span>
+                      </div>
+                    </div>
+                    <p>{note.content}</p>
+                  </>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </>
+)}
     </div>
   )
 }
