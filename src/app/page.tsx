@@ -1,6 +1,10 @@
 'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '../../lib/supabaseClient'
 import styles from "./page.module.css"
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const demoNotes = [
   {
@@ -21,17 +25,51 @@ const demoNotes = [
   {
     id: 4,
     title: "🎯 About Me",
-    content: "Hi, I’m Ajay I built this app to simplify note-taking. Feel free to explore!",
+    content: "Hi, I’m Ajay. I built this app to simplify note-taking. Feel free to explore!",
   }
 ]
 
-export default function home() {
+export default function HomePage() {
+  const [user, setUser] = useState<any>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        setUser(session.user)
+      }
+    }
+
+    checkSession()
+
+    
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    router.refresh() 
+  }
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.logo}>My Notes App</h1>
         <div className={styles.actions}>
-          <Link href="/auth" className={styles.link}>Login</Link>
+          {user ? (
+            <>
+              <Link href="/dashboard" className={styles.link}>My Notes</Link>
+              <button onClick={handleLogout} className={styles.link}>Logout</button>
+            </>
+          ) : (
+            <Link href="/auth" className={styles.link}>Login</Link>
+          )}
         </div>
       </header>
 
