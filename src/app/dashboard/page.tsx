@@ -59,6 +59,7 @@ const router = useRouter()
     }
   }
 
+  const [colour,setColour] = useState('')
   const handleCreateNote = async () => {
     if (!title.trim() || !content.trim()) {
       setMessage('Both title and content are required.')
@@ -77,6 +78,7 @@ const router = useRouter()
       title,
       content,
       user_id: userId,
+      colour,
     })
 
     if (error) {
@@ -87,6 +89,7 @@ const router = useRouter()
       setTitle('')
       setContent('')
       fetchNotes(userId!)
+      setColour('')
     }
   }
 
@@ -177,6 +180,17 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
         rows={5}
         className={styles.textarea}
       />
+      <div className={styles.colourPicker}>
+  <label>Select Color Label:</label>
+  <select value={colour} onChange={(e) => setColour(e.target.value)} className={styles.select}>
+    <option value="gray">Gray</option>
+    <option value="red">Red</option>
+    <option value="blue">Blue</option>
+    <option value="green">Green</option>
+    <option value="yellow">Yellow</option>
+    <option value="purple">Purple</option>
+  </select>
+</div>
 
       <button onClick={handleCreateNote} className={styles.button}>
         Create Note
@@ -185,6 +199,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
       {message && <p className={styles.message}>{message}</p>}
 
       <hr />
+      
 
       {notes.length === 0 ? (
   <p>No notes yet.</p>
