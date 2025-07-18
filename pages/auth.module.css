@@ -1,0 +1,41 @@
+
+
+.container {
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.input {
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.switch {
+  margin-top: 10px;
+}
+
+.linkButton {
+  color: blue;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}

@@ -56,3 +56,21 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+
+.select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+.noteHeader{
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+}
+.icon{
+  cursor: pointer;
+    padding: .2em;
+
+
+}
