@@ -1,3 +1,9 @@
+.topBar{
+  display: grid;
+  grid-auto-flow: column;
+  padding-block: 2rem;
+}
+
 .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
@@ -20,7 +26,7 @@
   max-width: 600px;
   margin: auto;
   padding: 20px;
-}
+} 
 
 .input {
   width: 100%;
@@ -46,15 +52,22 @@
   margin-top: 10px;
   color: green;
 }
+
+.notesSection {
+  margin-top: 4rem;
+}
+
 .noteList {
   list-style: none;
   padding: 0;
 }
 
 .noteItem {
+  padding-block: 3rem;
+  padding-inline: 1rem;
   border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
+  border-radius: 6px;
+  margin-block: 1rem;
 }
 
 
