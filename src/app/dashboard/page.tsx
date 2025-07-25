@@ -163,7 +163,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
   )}
 </div>
 
-      <h1>Create a New Note</h1>
+      <h1 className={styles.dashboardHeader}>Create a New Note</h1>
 
       <input
         type="text"

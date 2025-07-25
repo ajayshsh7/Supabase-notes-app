@@ -57,6 +57,10 @@
   border: 1px solid white;
   color: rgb(225, 225, 225);
 }
+.dashboardHeader{
+  padding-top: 4rem;
+  padding-bottom: 1rem;
+}
 .pinnedNotesHeading{
   margin-top: 4rem;
 }
