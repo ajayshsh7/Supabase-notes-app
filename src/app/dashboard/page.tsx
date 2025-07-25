@@ -187,7 +187,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
 
       {message && <p className={styles.message}>{message}</p>}
 
-      <hr />
+      
       
 
       {notes.length === 0 ? (
@@ -197,7 +197,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
     {/* 📌 Pinned Notes Section */}
     {notes.some(note => note.pinned_notes) && (
       <>
-        <h2>Pinned Notes</h2>
+        <h2 className={styles.pinnedNotesHeading}>Pinned Notes</h2>
         <ul className={styles.noteList}>
           {notes.filter(note => note.pinned_notes).map((note) => (
             <li key={note.id} className={styles.noteItem}>
@@ -222,7 +222,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
                 ) : (
                   <>
                     <div className={styles.noteHeader}>
-                      <h3><span style={{
+                      <h3 className={styles.noteHeading}><span style={{
 
                       }}></span>{note.title}</h3>
                       <div className={styles.actions}>
@@ -252,7 +252,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
                   </>
                 )}
               </div>
-                <p>{note.content}</p>
+                <p className={styles.noteContent}>{note.content}</p>
             </li>
           ))}
         </ul>
@@ -262,7 +262,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
     {/* 📝 Other Notes Section */}
     {notes.some(note => !note.pinned_notes) && (
       <>
-        <h2>Your Notes</h2>
+        <h2 className={styles.yourNotesHeading}>Your Notes</h2>
         <ul className={styles.noteList}>
           {notes.filter(note => !note.pinned_notes).map((note) => (
             <li key={note.id} className={styles.noteItem}>
@@ -287,7 +287,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
                 ) : (
                   <>
                     <div className={styles.noteHeader}>
-                      <h3>{note.title}</h3>
+                      <h3 className={styles.noteHeading}>{note.title}</h3>
                       <div className={styles.actions}>
                         <span
                           className={styles.icon}
@@ -315,7 +315,7 @@ const handleTogglePin = async (noteId: number, currentStatus: boolean) => {
                   </>
                 )}
               </div>
-                <p>{note.content}</p>
+                <p className={styles.noteContent}>{note.content}</p>
             </li>
           ))}
         </ul>
