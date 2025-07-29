@@ -75,7 +75,7 @@ export default function HomePage() {
 
       <section className={styles.notesSection}>
         <h2>📝 Try the Demo</h2>
-        <p>Here's a preview of what your notes could look like:</p>
+        <p className={styles.heroPara}>Sign-up using google and click on my notes, you ready to go!</p>
 
         <ul className={styles.noteList}>
           {demoNotes.map(note => (

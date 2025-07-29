@@ -15,6 +15,9 @@
   font-weight: bold;
 }
 
+.heroPara{
+  padding-top: .4em;
+}
 .actions {
   display: flex;
   gap: 1rem;
