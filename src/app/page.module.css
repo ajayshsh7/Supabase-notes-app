@@ -45,3 +45,8 @@
   border-radius: 6px;
   margin-block: 2rem;
 }
+.link {
+  color: #0070f3; 
+  text-decoration: underline; 
+}
+

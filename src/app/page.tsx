@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabaseClient'
 import styles from "./page.module.css"
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import ReactMarkdown from "react-markdown";
 
 const demoNotes = [
   {
@@ -25,7 +26,7 @@ const demoNotes = [
   {
     id: 4,
     title: "🎯 About Me",
-    content: "Hi, I’m Ajay. I built this app to simplify note-taking. Feel free to explore!",
+    content: "Hi, I’m Ajay. I built this app to simplify note-taking. Feel free to explore! \n\n Connect With Me \n\n [LinkedIn](https://linkedin.com/in/ajay-kumarsharma/) \n\n [My Website](https://ajay-sharma.in/)",
   }
 ]
 
@@ -81,7 +82,17 @@ export default function HomePage() {
           {demoNotes.map(note => (
             <li key={note.id} className={styles.noteItem}>
               <h3>{note.title}</h3>
-              <p>{note.content}</p>
+              <ReactMarkdown components={{
+        a: ({ node, ...props }) => (
+          <a
+            {...props}
+            className={styles.link}   
+            target="_blank"
+            rel="noopener noreferrer"
+          />
+        ),
+      }}
+    >{note.content}</ReactMarkdown>
             </li>
           ))}
         </ul>
